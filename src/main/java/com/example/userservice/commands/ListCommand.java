@@ -1,15 +1,15 @@
 package com.example.userservice.commands;
 
-import com.example.userservice.dao.UserDao;
 import com.example.userservice.model.User;
+import com.example.userservice.service.UserService;
 import java.util.List;
 
 public class ListCommand implements Command {
-    private final UserDao userDao;
+    private final UserService userService;
     private static final String COLLECTION_EMPTY = "Collection is empty";
 
-    public ListCommand(UserDao userDao) {
-        this.userDao = userDao;
+    public ListCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -19,13 +19,13 @@ public class ListCommand implements Command {
 
     @Override
     public Result execute(String[] args) {
-        List<User> users = userDao.getAll();
+        List<User> users = userService.getAll();
         if (users.isEmpty()) {
             return Result.failure(COLLECTION_EMPTY);
         }
         StringBuilder sb = new StringBuilder();
         for (User user : users) {
-            sb.append(user.toString()).append("\n");
+            sb.append(user).append("\n");
         }
         return Result.success(sb.toString());
     }

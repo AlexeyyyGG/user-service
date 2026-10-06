@@ -1,16 +1,16 @@
 package com.example.userservice.commands;
 
-import com.example.userservice.dao.UserDao;
+import com.example.userservice.exception.UserNotFoundException;
 import com.example.userservice.model.User;
+import com.example.userservice.service.UserService;
 import com.example.userservice.util.Utils;
 
 public class GetCommand implements Command {
-    private final UserDao userDao;
+    private final UserService userService;
     private static final String NO_ID_SPECIFIED = "You must specify the user ID";
-    private static final String NO_USER_WITH_ID = "There are no users with this ID";
 
-    public GetCommand(UserDao userDao) {
-        this.userDao = userDao;
+    public GetCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -25,12 +25,9 @@ public class GetCommand implements Command {
         }
         try {
             Long id = Utils.parseId(args[0]);
-            User user = userDao.getById(id);
-            if (user == null) {
-                return Result.failure(NO_USER_WITH_ID);
-            }
+            User user = userService.getById(id);
             return Result.success(user.toString());
-        } catch (IllegalArgumentException e) {
+        } catch (UserNotFoundException | IllegalArgumentException e) {
             return Result.failure(e.getMessage());
         }
     }
