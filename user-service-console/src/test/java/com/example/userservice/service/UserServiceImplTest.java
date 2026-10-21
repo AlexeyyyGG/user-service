@@ -10,10 +10,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.example.userservice.dao.UserDao;
-import com.example.userservice.exception.EmailAlreadyExistsException;
-import com.example.userservice.exception.UserNotFoundException;
-import com.example.userservice.model.User;
+import com.example.userservice.console.dao.UserDao;
+import com.example.userservice.common.exception.EmailAlreadyExistsException;
+import com.example.userservice.common.exception.UserNotFoundException;
+import com.example.userservice.common.model.User;
+import com.example.userservice.console.service.UserServiceImpl;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
