@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.example.userservice.model.User;
+import com.example.userservice.common.model.User;
+import com.example.userservice.console.dao.UserDaoImpl;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
