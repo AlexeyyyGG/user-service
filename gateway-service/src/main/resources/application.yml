@@ -1,6 +1,8 @@
 server:
   port: 8082
 spring:
+  config:
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   application:
     name: gateway-service
   cloud:
@@ -24,4 +26,10 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8789/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8789/eureka/}
+
+resilience4j:
+  timelimiter:
+    instances:
+      userServiceCircuitBreaker:
+        timeoutDuration: 5s
