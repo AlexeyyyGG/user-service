@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.userservice.common.model.User;
+import com.example.userservice.web.kafka.UserEventProducer;
 import com.example.userservice.web.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -35,6 +37,8 @@ class UserControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
+    @MockitoBean
+    private UserEventProducer userEventProducer;
 
     @BeforeEach
     void setUp() {
@@ -122,8 +126,8 @@ class UserControllerTest {
     void getAllShouldReturnEmptyArray() throws Exception {
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$._embedded").doesNotExist())
+                .andExpect(jsonPath("$._links.self").exists());
     }
 
     @Test
